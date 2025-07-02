@@ -1,5 +1,5 @@
 apiVersion: v2
-name: node-app
+name: elysia-app
 description: A Helm chart for Elysia.js app using Bun
 type: application
 version: 0.1.0

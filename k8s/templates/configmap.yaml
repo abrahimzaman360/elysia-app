@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: node-config
 data:
-  APP_NAME: "KubeLearningNodeApp"
+  APP_NAME: "elysia-app"

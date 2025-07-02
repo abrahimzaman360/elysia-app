@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: node-app
+  repository: elysia-app
   tag: latest
   pullPolicy: IfNotPresent
 
