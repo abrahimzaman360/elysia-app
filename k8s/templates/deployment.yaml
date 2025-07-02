@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: { { include "elysia-app.fullname" . } }
+  labels:
+    app: { { include "elysia-app.name" . } }
+spec:
+  replicas: { { .Values.replicaCount } }
+  selector:
+    matchLabels:
+      app: { { include "elysia-app.name" . } }
+  template:
+    metadata:
+      labels:
+        app: { { include "elysia-app.name" . } }
+    spec:
+      containers:
+        - name: { { .Chart.Name } }
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: { { .Values.image.pullPolicy } }
+          ports:
+            - containerPort: { { .Values.service.port } }
+          env:
+            - name: PORT
+              value: "{{ .Values.service.port | quote }}"
+          resources: { { - toYaml .Values.resources | nindent 12 } }
+          livenessProbe:
+            httpGet:
+              path: /
+              port: { { .Values.service.port } }
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: { { .Values.service.port } }
+            initialDelaySeconds: 3
+            periodSeconds: 5
