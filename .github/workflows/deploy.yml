@@ -36,9 +36,11 @@ jobs:
           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
         shell: bash
 
-      # ✅ Deploy to Kubernetes using kubectl or helm
-      - name: Deploy to K8s
+      # ✅ Deploy to Kubernetes using Helm
+      - name: Deploy to Kubernetes via Helm
         run: |
-          kubectl apply -f ./kubernetes
-          # OR:
-          # helm upgrade --install elysia-app ./helm/elysia-app --namespace default --create-namespace
+          helm upgrade --install elysia-app ./k8s \
+            --namespace default \
+            --create-namespace \
+            --set image.repository=ghcr.io/${{ github.repository }} \
+            --set image.tag=latest
