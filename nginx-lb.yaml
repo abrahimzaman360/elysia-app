@@ -1,0 +1,19 @@
+# nginx-lb.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-nginx-controller
+  namespace: ingress-nginx
+  annotations:
+    loadbalancer.exoscale.ch/elastic-ip: bc448e29-4228-4968-96e3-66ce5f57ab99 # your EIP ID
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+    - port: 443
+      targetPort: 443
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: ingress-nginx
