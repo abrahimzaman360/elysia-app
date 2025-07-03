@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: ghcr.io/abrahimzaman360/elysia-app
-  tag: deb03b4352fbd6f5908e2493227e375a98079be5
+  tag: 2a6b9cd3c5b13909c58a1f9b8da45f7f9b823663
   pullPolicy: IfNotPresent
 
 service:
