@@ -1,7 +1,7 @@
 replicaCount: 2
 image:
   repository: ghcr.io/abrahimzaman360/elysia-app
-  tag: 33e937c48deb02ac3dcc84c3ceb43d768e59abfb
+  tag: 561fb4b3b553a89c803444e8157ca3c6d77348ea
   pullPolicy: IfNotPresent
 imagePullSecrets:
   - name: ghcr-secret
