@@ -5,6 +5,7 @@ metadata:
   labels:
     app: {{ include "elysia-app.name" . }}
 spec:
+  imagePullSecrets: {{ toYaml .Values.imagePullSecrets | nindent 4 }}
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:

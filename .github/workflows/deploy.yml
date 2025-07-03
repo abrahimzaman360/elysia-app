@@ -76,3 +76,6 @@ jobs:
             --create-namespace \
             --set image.repository=ghcr.io/${{ github.repository }} \
             --set image.tag=${{ github.sha }}
+
+
+            
