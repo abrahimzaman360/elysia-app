@@ -8,7 +8,7 @@ imagePullSecrets:
 service:
   port: 80
   targetPort: 3000
-  type: ClusterIP
+  type: LoadBalancer
 resources:
   requests:
     cpu: "100m"
