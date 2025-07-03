@@ -6,6 +6,7 @@ metadata:
     app: {{ include "elysia-app.name" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  type: Recreate
   selector:
     matchLabels:
       app: {{ include "elysia-app.name" . }}
