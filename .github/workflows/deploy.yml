@@ -13,12 +13,15 @@ jobs:
       packages: write
 
     steps:
+      # 1. Checkout repo
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 2. Set up Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # 3. Log in to GHCR
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
@@ -26,26 +29,49 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
 
+      # 4. Build and push Docker image (tag = commit SHA)
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
+            ghcr.io/${{ github.repository }}:latest
 
+      # 5. Update Helm values.yaml with SHA image tag
       - name: Update image tag in values.yaml
         run: |
-          sed -i "s|tag: .*|tag: latest|" ./k8s/values.yaml
+          sed -i "s|^\(\s*tag:\s*\).*|\1${{ github.sha }}|" ./k8s/values.yaml
         shell: bash
 
+      # 6. Commit updated values.yaml (if changed)
       - name: Commit updated values.yaml
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-          git diff --quiet && echo "No changes to commit" && exit 0
+          git diff --quiet ./k8s/values.yaml && echo "No changes to commit" && exit 0
 
           git add ./k8s/values.yaml
-          git commit -m "ci: update image tag to latest"
+          git commit -m "ci: update image tag to ${{ github.sha }}"
           git push
+
+      # 7. Set up kubeconfig
+      - name: Configure Kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+
+      # 8. Install Helm
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      # 9. Helm upgrade (Kubernetes deploy)
+      - name: Deploy with Helm
+        run: |
+          helm upgrade --install my-app ./k8s \
+            --namespace default \
+            --create-namespace \
+            --set image.repository=ghcr.io/${{ github.repository }} \
+            --set image.tag=${{ github.sha }}
