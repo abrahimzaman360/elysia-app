@@ -6,10 +6,9 @@ image:
 imagePullSecrets:
   - name: ghcr-secret
 service:
-  port: 3000
+  port: 80
   targetPort: 3000
   type: ClusterIP
-  nodePort: 3000
 resources:
   requests:
     cpu: "100m"
