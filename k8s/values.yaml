@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: elysia-app
+  repository: ghcr.io/abrahimzaman360/elysia-app
   tag: latest
   pullPolicy: IfNotPresent
 

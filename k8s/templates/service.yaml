@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-   name: {{ include "elysia-app.fullname" . }}-svc
+  name: {{ include "elysia-app.fullname" . }}
   labels:
-    app: { { include "elysia-app.name" . } } # Helm label to match Deployment
+    app: {{ include "elysia-app.name" . }}
 spec:
   selector:
-    app: { { include "elysia-app.name" . } } # Make sure this matches Deployment labels
-  type: ClusterIP # ✅ Use internal-only service
+    app: {{ include "elysia-app.name" . }}
+  type: ClusterIP
   ports:
     - protocol: TCP
-      port: 80 # NGINX will talk to this port
-      targetPort: 3000 # Elysia app container port
+      port: 80
+      targetPort: {{ .Values.service.port }}

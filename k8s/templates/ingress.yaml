@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "elysia-app.fullname" . }}-ingress
+  name: {{ include "elysia-app.fullname" . }}
   annotations:
     {{- range $key, $value := .Values.ingress.annotations }}
     {{ $key }}: {{ $value | quote }}
@@ -16,7 +16,7 @@ spec:
             pathType: {{ .Values.ingress.pathType }}
             backend:
               service:
-                name: {{ include "elysia-app.fullname" . }}-svc
+                name: {{ include "elysia-app.fullname" . }}
                 port:
                   number: 80
 {{- end }}
