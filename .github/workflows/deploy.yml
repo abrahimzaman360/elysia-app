@@ -61,6 +61,7 @@ jobs:
       # 7. Set up kubeconfig
       - name: Configure Kubeconfig
         run: |
+          mkdir -p ~/.kube
           echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
 
       # 8. Install Helm
