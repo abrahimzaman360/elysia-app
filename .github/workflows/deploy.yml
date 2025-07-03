@@ -71,11 +71,8 @@ jobs:
       # 9. Helm upgrade (Kubernetes deploy)
       - name: Deploy with Helm
         run: |
-          helm upgrade --install my-app ./k8s \
+          helm upgrade --install elysia-app ./k8s \
             --namespace default \
             --create-namespace \
             --set image.repository=ghcr.io/${{ github.repository }} \
             --set image.tag=${{ github.sha }}
-
-
-            
